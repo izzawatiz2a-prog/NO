@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADJEKTIFVERSE | Kamus Kata Adjektif</title>
+
+<style>
+:root {
+    --purple: #7655d9;
+    --pink: #ff8db3;
+    --cream: #fff9f1;
+    --dark: #30264b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+}
+
+header {
+    padding: 28px 7%;
+    background: linear-gradient(120deg, #7655d9, #b58af5, #ff9fc1);
+    color: white;
+}
+
+header h1 {
+    margin: 0;
+    font-size: clamp(28px, 5vw, 44px);
+    letter-spacing: 2px;
+}
+
+header p {
+    margin-bottom: 0;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 7%;
+    background: white;
+    border-bottom: 1px solid #eee4fa;
+}
+
+nav button, .btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 12px 18px;
+    background: #eee6ff;
+    color: #5635b0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav button:hover, .btn:hover {
+    background: #dfd0ff;
+}
+
+nav button.active {
+    background: var(--purple);
+    color: white;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 28px 18px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.hero {
+    padding: 25px;
+    margin-bottom: 22px;
+    border-radius: 22px;
+    background: white;
+    border: 1px solid #eee4fa;
+}
+
+.hero h2 {
+    margin-top: 0;
+}
+
+.search-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+input, select {
+    padding: 14px;
+    border: 2px solid #e5d9fa;
+    border-radius: 12px;
+    font-size: 16px;
+    background: white;
+}
+
+input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.primary {
+    background: var(--purple);
+    color: white;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 22px;
+    background: #f5efff;
+    border-radius: 18px;
+    line-height: 1.7;
+}
+
+.result h3 {
+    font-size: 28px;
+    margin: 0 0 10px;
+    color: #6542c4;
+}
+
+.tag {
+    display: inline-block;
+    background: #ffe4ef;
+    color: #9c3562;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.word-card {
+    padding: 18px;
+    border-radius: 16px;
+    background: white;
+    border: 1px solid #eee4fa;
+}
+
+.word-card h3 {
+    color: var(--purple);
+    margin-top: 0;
+}
+
+.word-card button {
+    margin-top: 8px;
+}
+
+.muted {
+    color: #756b87;
+    line-height: 1.6;
+}
+
+.quiz-box {
+    padding: 24px;
+    border-radius: 20px;
+    background: white;
+    border: 1px solid #eee4fa;
+}
+
+.options {
+    display: grid;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.options button {
+    padding: 14px;
+    text-align: left;
+    background: #f5efff;
+    color: var(--dark);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.options button:hover {
+    border-color: var(--purple);
+}
+
+.options button:disabled {
+    cursor: default;
+}
+
+footer {
+    text-align: center;
+    padding: 24px;
+    color: #756b87;
+}
+
+@media (max-width: 500px) {
+    nav {
+        padding: 12px;
+    }
+
+    nav button {
+        flex: 1;
+        padding: 11px 8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ADJEKTIFVERSE ✨</h1>
+    <p>Jom teroka dunia kata adjektif Bahasa Melayu!</p>
+</header>
+
+<nav>
+    <button class="active" data-page="utama">🏠 Utama</button>
+    <button data-page="kamus">📚 Kamus</button>
+    <button data-page="kuiz">🎮 Kuiz</button>
+</nav>
+
+<main>
+
+<section id="utama" class="page active">
+    <div class="hero">
+        <h2>Selamat datang ke ADJEKTIFVERSE!</h2>
+        <p class="muted">
+            Cari perkataan, fahami maksudnya dan pelajari cara
+            menggunakannya dalam ayat.
+        </p>
+        <button class="btn primary" onclick="showPage('kamus')">
+            Mula meneroka →
+        </button>
+    </div>
+
+    <div class="hero">
+        <h2>🔎 Carian pantas</h2>
+        <div class="search-row">
+            <input id="homeSearch"
+                   placeholder="Contoh: cantik, rajin, tinggi..."
+                   aria-label="Cari kata adjektif">
+            <button class="btn primary" onclick="searchWord('homeSearch')">
+                Cari
+            </button>
+        </div>
+        <div id="homeResult"></div>
+    </div>
+
+    <div class="hero">
+        <h2>📖 Tahukah kamu?</h2>
+        <p id="dailyFact"></p>
+        <button class="btn" onclick="newFact()">Fakta lain</button>
+    </div>
+</section>
+
+<section id="kamus" class="page">
+    <div class="hero">
+        <h2>📚 Kamus Kata Adjektif</h2>
+        <p class="muted">Cari mana-mana perkataan dalam koleksi kamus.</p>
+
+        <div class="search-row">
+            <input id="dictionarySearch"
+                   placeholder="Taip perkataan yang dicari..."
+                   aria-label="Carian kamus"
+                   oninput="renderDictionary()">
+            <select id="sortOrder" onchange="renderDictionary()"
+                    aria-label="Susunan perkataan">
+                <option value="az">A hingga Z</option>
+                <option value="za">Z hingga A</option>
+            </select>
+        </div>
+
+        <p id="wordCount" class="muted"></p>
+        <div id="dictionaryResults" class="grid"></div>
+    </div>
+</section>
+
+<section id="kuiz" class="page">
+    <div class="hero">
+        <h2>🎮 Cabaran Adjektif</h2>
+        <p class="muted">Pilih jawapan yang paling tepat.</p>
+        <button class="btn primary" onclick="startQuiz()">Mula / Ulang kuiz</button>
+    </div>
+
+    <div class="quiz-box">
+        <p id="quizProgress">Tekan butang mula untuk bermain.</p>
+        <h3 id="quizQuestion">Bersedia untuk menguji minda?</h3>
+        <div id="quizOptions" class="options"></div>
+        <p id="quizFeedback" aria-live="polite"></p>
+        <p id="quizScore"></p>
+        <button id="nextQuestion" class="btn primary"
+                onclick="nextQuizQuestion()" hidden>
+            Soalan seterusnya →
+        </button>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    ADJEKTIFVERSE © 2026 · Terokai bahasa, perkaya minda 💜
+</footer>
+
+<script>
+// ================================================
+// 1. DATA KAMUS
+// Tambah perkataan baharu di dalam senarai ini.
+// Setiap perkataan mempunyai kata, maksud, ayat
+// dan kategori.
+// ================================================
+
+const kamus = [
+    {kata:"cantik", maksud:"Indah dipandang atau menarik rupa.",
+     ayat:"Bunga di taman itu sangat cantik.", kategori:"Pancaindera"},
+    {kata:"hodoh", maksud:"Tidak cantik dipandang.",
+     ayat:"Lukisan itu kelihatan hodoh.", kategori:"Pancaindera"},
+    {kata:"besar", maksud:"Tidak kecil dari segi saiz.",
+     ayat:"Rumah nenek sangat besar.", kategori:"Ukuran"},
+    {kata:"kecil", maksud:"Tidak besar dari segi saiz.",
+     ayat:"Adik mempunyai sebuah beg kecil.", kategori:"Ukuran"},
+    {kata:"tinggi", maksud:"Jauh ke atas atau mempunyai ukuran menegak yang besar.",
+     ayat:"Pokok kelapa itu tinggi.", kategori:"Ukuran"},
+    {kata:"rendah", maksud:"Tidak tinggi.",
+     ayat:"Bangunan itu lebih rendah daripada bangunan di sebelahnya.", kategori:"Ukuran"},
+    {kata:"luas", maksud:"Mempunyai kawasan yang besar.",
+     ayat:"Padang sekolah kami luas.", kategori:"Ukuran"},
+    {kata:"sempit", maksud:"Tidak luas.",
+     ayat:"Jalan ke rumah itu sempit.", kategori:"Ukuran"},
+    {kata:"dalam", maksud:"Mempunyai jarak yang jauh dari permukaan ke dasar.",
+     ayat:"Kolam itu sangat dalam.", kategori:"Ukuran"},
+    {kata:"cetek", maksud:"Tidak dalam.",
+     ayat:"Air di tepi pantai itu cetek.", kategori:"Ukuran"},
+    {kata:"panjang", maksud:"Mempunyai ukuran dari hujung ke hujung yang besar.",
+     ayat:"Rambut kakak panjang.", kategori:"Ukuran"},
+    {kata:"pendek", maksud:"Tidak panjang.",
+     ayat:"Pensel itu terlalu pendek.", kategori:"Ukuran"},
+    {kata:"tebal", maksud:"Mempunyai ukuran antara dua permukaan yang besar.",
+     ayat:"Buku cerita itu tebal.", kategori:"Ukuran"},
+    {kata:"nipis", maksud:"Tidak tebal.",
+     ayat:"Kertas itu nipis.", kategori:"Ukuran"},
+    {kata:"berat", maksud:"Mempunyai jisim yang besar atau sukar diangkat.",
+     ayat:"Kotak itu berat.", kategori:"Ukuran"},
+    {kata:"ringan", maksud:"Tidak berat.",
+     ayat:"Beg sekolah ini ringan.", kategori:"Ukuran"},
+    {kata:"jauh", maksud:"Mempunyai jarak yang besar.",
+     ayat:"Rumah saya jauh dari sekolah.", kategori:"Jarak"},
+    {kata:"dekat", maksud:"Tidak jauh.",
+     ayat:"Kedai itu dekat dengan rumah saya.", kategori:"Jarak"},
+    {kata:"cepat", maksud:"Dalam tempoh masa yang singkat.",
+     ayat:"Aina menyiapkan kerja dengan cepat.", kategori:"Waktu"},
+    {kata:"lambat", maksud:"Tidak cepat atau lewat.",
+     ayat:"Bas itu tiba lambat.", kategori:"Waktu"},
+    {kata:"awal", maksud:"Tidak lewat atau sebelum waktu biasa.",
+     ayat:"Murid-murid tiba awal di sekolah.", kategori:"Waktu"},
+    {kata:"lama", maksud:"Memerlukan atau melibatkan tempoh masa yang panjang.",
+     ayat:"Kami menunggu lama di stesen bas.", kategori:"Waktu"},
+    {kata:"baharu", maksud:"Belum lama digunakan atau wujud.",
+     ayat:"Ayah membeli kasut baharu.", kategori:"Waktu"},
+    {kata:"tua", maksud:"Sudah berumur atau berusia lanjut.",
+     ayat:"Pokok tua itu masih berbuah.", kategori:"Waktu"},
+    {kata:"muda", maksud:"Belum tua atau masih kecil usianya.",
+     ayat:"Pemuda itu membantu jiran.", kategori:"Waktu"},
+    {kata:"panas", maksud:"Mempunyai suhu yang tinggi.",
+     ayat:"Cuaca hari ini panas.", kategori:"Suhu"},
+    {kata:"sejuk", maksud:"Mempunyai suhu yang rendah.",
+     ayat:"Air di dalam peti sejuk itu sejuk.", kategori:"Suhu"},
+    {kata:"hangat", maksud:"Agak panas.",
+     ayat:"Ibu menghidangkan sup yang masih hangat.", kategori:"Suhu"},
+    {kata:"nyaman", maksud:"Segar dan menyenangkan, khususnya keadaan udara.",
+     ayat:"Udara di kawasan bukit itu nyaman.", kategori:"Suhu"},
+    {kata:"manis", maksud:"Mempunyai rasa seperti gula.",
+     ayat:"Tembikai itu manis.", kategori:"Pancaindera"},
+    {kata:"masam", maksud:"Mempunyai rasa seperti cuka atau limau.",
+     ayat:"Mangga muda itu masam.", kategori:"Pancaindera"},
+    {kata:"masin", maksud:"Mempunyai rasa seperti garam.",
+     ayat:"Sup itu terlalu masin.", kategori:"Pancaindera"},
+    {kata:"pahit", maksud:"Mempunyai rasa yang kurang menyenangkan seperti kopi tanpa gula.",
+     ayat:"Ubat itu pahit.", kategori:"Pancaindera"},
+    {kata:"kelat", maksud:"Mempunyai rasa seakan-akan kesat pada lidah.",
+     ayat:"Buah pinang muda itu kelat.", kategori:"Pancaindera"},
+    {kata:"wangi", maksud:"Mempunyai bau yang harum.",
+     ayat:"Bunga melur itu wangi.", kategori:"Pancaindera"},
+    {kata:"busuk", maksud:"Mempunyai bau yang tidak menyenangkan.",
+     ayat:"Sampah itu berbau busuk.", kategori:"Pancaindera"},
+    {kata:"harum", maksud:"Mempunyai bau yang menyenangkan.",
+     ayat:"Bunga mawar itu harum.", kategori:"Pancaindera"},
+    {kata:"hanyir", maksud:"Mempunyai bau seperti ikan atau darah.",
+     ayat:"Tangan itu berbau hanyir selepas membersihkan ikan.", kategori:"Pancaindera"},
+    {kata:"licin", maksud:"Mempunyai permukaan yang rata dan kurang kesat.",
+     ayat:"Lantai itu licin selepas dibersihkan.", kategori:"Pancaindera"},
+    {kata:"kasar", maksud:"Tidak licin atau tidak halus apabila disentuh.",
+     ayat:"Permukaan batu itu kasar.", kategori:"Pancaindera"},
+    {kata:"lembut", maksud:"Tidak keras apabila disentuh.",
+     ayat:"Bantal itu lembut.", kategori:"Pancaindera"},
+    {kata:"keras", maksud:"Tidak mudah ditekan atau diubah bentuk.",
+     ayat:"Batu itu keras.", kategori:"Pancaindera"},
+    {kata:"halus", maksud:"Kecil, licin atau tidak kasar teksturnya.",
+     ayat:"Kain sutera itu halus.", kategori:"Pancaindera"},
+    {kata:"nyaring", maksud:"Mengeluarkan bunyi yang kuat dan jelas.",
+     ayat:"Suara penyanyi itu nyaring.", kategori:"Pancaindera"},
+    {kata:"garau", maksud:"Mempunyai suara yang kasar dan rendah.",
+     ayat:"Suara lelaki itu garau.", kategori:"Pancaindera"},
+    {kata:"merdu", maksud:"Sedap didengar, khususnya suara atau muzik.",
+     ayat:"Suara penyanyi itu merdu.", kategori:"Pancaindera"},
+    {kata:"bising", maksud:"Mengeluarkan bunyi yang kuat dan mengganggu.",
+     ayat:"Suasana di kantin sangat bising.", kategori:"Pancaindera"},
+    {kata:"senyap", maksud:"Tidak mengeluarkan bunyi.",
+     ayat:"Perpustakaan itu senyap.", kategori:"Pancaindera"},
+    {kata:"terang", maksud:"Mempunyai cahaya yang banyak.",
+     ayat:"Bilik itu terang pada waktu siang.", kategori:"Pancaindera"},
+    {kata:"gelap", maksud:"Kurang atau tiada cahaya.",
+     ayat:"Langit menjadi gelap sebelum hujan.", kategori:"Pancaindera"},
+    {kata:"jernih", maksud:"Bening dan mudah dilihat menembusinya.",
+     ayat:"Air sungai itu jernih.", kategori:"Pancaindera"},
+    {kata:"keruh", maksud:"Tidak jernih.",
+     ayat:"Air sungai menjadi keruh selepas hujan.", kategori:"Pancaindera"},
+    {kata:"bersih", maksud:"Tidak kotor.",
+     ayat:"Bilik darjah kami bersih.", kategori:"Keadaan"},
+    {kata:"kotor", maksud:"Tidak bersih.",
+     ayat:"Kasut itu kotor selepas bermain.", kategori:"Keadaan"},
+    {kata:"kemas", maksud:"Tersusun dengan rapi.",
+     ayat:"Meja belajar saya kemas.", kategori:"Keadaan"},
+    {kata:"comot", maksud:"Kotor atau bercapuk pada permukaan.",
+     ayat:"Muka adik comot selepas makan coklat.", kategori:"Keadaan"},
+    {kata:"sihat", maksud:"Berada dalam keadaan tubuh yang baik.",
+     ayat:"Datuk semakin sihat.", kategori:"Keadaan"},
+    {kata:"sakit", maksud:"Tidak sihat atau berasa tidak selesa.",
+     ayat:"Adik sakit kepala.", kategori:"Keadaan"},
+    {kata:"subur", maksud:"Tumbuh dengan baik dan sihat.",
+     ayat:"Pokok cili itu subur.", kategori:"Keadaan"},
+    {kata:"layu", maksud:"Tidak segar atau kehilangan kesegaran.",
+     ayat:"Daun bunga itu layu.", kategori:"Keadaan"},
+    {kata:"penuh", maksud:"Berisi sehingga tiada ruang yang mencukupi.",
+     ayat:"Botol itu penuh dengan air.", kategori:"Keadaan"},
+    {kata:"kosong", maksud:"Tidak berisi atau tidak mempunyai kandungan.",
+     ayat:"Bakul itu kosong.", kategori:"Keadaan"},
+    {kata:"gembira", maksud:"Berasa senang hati.",
+     ayat:"Mereka gembira menerima hadiah.", kategori:"Perasaan"},
+    {kata:"sedih", maksud:"Berasa dukacita.",
+     ayat:"Amir sedih kerana kehilangan pensel.", kategori:"Perasaan"},
+    {kata:"marah", maksud:"Berasa berang atau tidak senang hati.",
+     ayat:"Ayah marah apabila kami bising.", kategori:"Perasaan"},
+    {kata:"takut", maksud:"Berasa gentar terhadap sesuatu.",
+     ayat:"Saya takut akan gelap.", kategori:"Perasaan"},
+    {kata:"berani", maksud:"Tidak gentar menghadapi bahaya atau cabaran.",
+     ayat:"Anggota bomba itu berani menyelamatkan mangsa.", kategori:"Perasaan"},
+    {kata:"malu", maksud:"Berasa segan.",
+     ayat:"Dia malu untuk menyanyi di hadapan kelas.", kategori:"Perasaan"},
+    {kata:"rindu", maksud:"Berasa ingin bertemu atau bersama seseorang.",
+     ayat:"Saya rindu akan keluarga.", kategori:"Perasaan"},
+    {kata:"bimbang", maksud:"Berasa risau tentang sesuatu.",
+     ayat:"Ibu bimbang apabila adik belum pulang.", kategori:"Perasaan"},
+    {kata:"tenang", maksud:"Berada dalam keadaan tenteram.",
+     ayat:"Suasana tasik itu tenang.", kategori:"Perasaan"},
+    {kata:"gelisah", maksud:"Berasa tidak tenteram.",
+     ayat:"Dia gelisah menunggu keputusan peperiksaan.", kategori:"Perasaan"},
+    {kata:"rajin", maksud:"Tekun dan bersungguh-sungguh melakukan sesuatu.",
+     ayat:"Ali rajin mengulang kaji pelajaran.", kategori:"Sifat"},
+    {kata:"malas", maksud:"Tidak suka atau kurang berusaha melakukan sesuatu.",
+     ayat:"Dia malas mengemas bilik.", kategori:"Sifat"},
+    {kata:"baik", maksud:"Elok perangai atau tingkah lakunya.",
+     ayat:"Siti seorang murid yang baik.", kategori:"Sifat"},
+    {kata:"jahat", maksud:"Buruk perangai atau suka melakukan perkara yang tidak baik.",
+     ayat:"Watak jahat itu akhirnya insaf.", kategori:"Sifat"},
+    {kata:"jujur", maksud:"Bercakap benar dan tidak menipu.",
+     ayat:"Kita mestilah jujur ketika menjawab soalan.", kategori:"Sifat"},
+    {kata:"sopan", maksud:"Mempunyai adab dan tingkah laku yang baik.",
+     ayat:"Murid itu sopan ketika bercakap.", kategori:"Sifat"},
+    {kata:"sombong", maksud:"Memandang diri sendiri lebih tinggi daripada orang lain.",
+     ayat:"Jangan sombong apabila berjaya.", kategori:"Sifat"},
+    {kata:"pemurah", maksud:"Suka memberi atau membantu orang lain.",
+     ayat:"Jiran kami pemurah.", kategori:"Sifat"},
+    {kata:"kedekut", maksud:"Tidak suka berkongsi atau mengeluarkan wang.",
+     ayat:"Jangan kedekut untuk membantu orang yang memerlukan.", kategori:"Sifat"},
+    {kata:"bijak", maksud:"Pandai berfikir dan memahami sesuatu.",
+     ayat:"Murid itu bijak menyelesaikan masalah.", kategori:"Sifat"},
+    {kata:"bodoh", maksud:"Kurang bijak atau kurang pengetahuan dalam sesuatu hal.",
+     ayat:"Kita tidak patut menghina orang lain dengan panggilan bodoh.", kategori:"Sifat"},
+    {kata:"pintar", maksud:"Cerdas dan cepat memahami sesuatu.",
+     ayat:"Adik pintar mengira.", kategori:"Sifat"},
+    {kata:"lemah", maksud:"Tidak kuat.",
+     ayat:"Badannya lemah selepas demam.", kategori:"Sifat"},
+    {kata:"kuat", maksud:"Mempunyai tenaga atau daya yang besar.",
+     ayat:"Abang kuat mengangkat kotak itu.", kategori:"Sifat"},
+    {kata:"garang", maksud:"Kelihatan bengis atau mudah menunjukkan kemarahan.",
+     ayat:"Harimau itu kelihatan garang.", kategori:"Sifat"},
+    {kata:"manja", maksud:"Suka dimanjakan atau diberi perhatian.",
+     ayat:"Anak kucing itu manja.", kategori:"Sifat"},
+    {kata:"sabar", maksud:"Mampu menahan perasaan ketika menghadapi kesukaran.",
+     ayat:"Kita perlu sabar ketika belajar.", kategori:"Sifat"},
+    {kata:"ikhlas", maksud:"Melakukan sesuatu dengan hati yang tulus.",
+     ayat:"Dia ikhlas membantu jirannya.", kategori:"Sifat"},
+    {kata:"merah", maksud:"Warna seperti darah.",
+     ayat:"Baju saya berwarna merah.", kategori:"Warna"},
+    {kata:"biru", maksud:"Warna seperti langit cerah.",
+     ayat:"Langit itu biru.", kategori:"Warna"},
+    {kata:"hijau", maksud:"Warna seperti daun segar.",
+     ayat:"Daun itu hijau.", kategori:"Warna"},
+    {kata:"kuning", maksud:"Warna seperti kunyit.",
+     ayat:"Bunga itu berwarna kuning.", kategori:"Warna"},
+    {kata:"putih", maksud:"Warna seperti kapas bersih.",
+     ayat:"Kucing itu putih.", kategori:"Warna"},
+    {kata:"hitam", maksud:"Warna seperti arang.",
+     ayat:"Beg sekolah saya hitam.", kategori:"Warna"},
+    {kata:"ungu", maksud:"Warna yang terhasil daripada gabungan merah dan biru.",
+     ayat:"Bunga itu berwarna ungu.", kategori:"Warna"},
+    {kata:"jingga", maksud:"Warna seperti buah oren.",
+     ayat:"Langit kelihatan jingga ketika matahari terbenam.", kategori:"Warna"},
+    {kata:"kelabu", maksud:"Warna antara hitam dengan putih.",
+     ayat:"Awan kelabu menutupi langit.", kategori:"Warna"},
+    {kata:"perang", maksud:"Warna coklat.",
+     ayat:"Rambut patung itu berwarna perang.", kategori:"Warna"},
+    {kata:"laju", maksud:"Bergerak dengan pantas.",
+     ayat:"Kereta lumba itu bergerak laju.", kategori:"Cara"},
+    {kata:"perlahan", maksud:"Tidak laju.",
+     ayat:"Kura-kura berjalan perlahan.", kategori:"Cara"},
+    {kata:"pantas", maksud:"Cepat bergerak atau bertindak.",
+     ayat:"Aina berlari dengan pantas.", kategori:"Cara"},
+    {kata:"lambat", maksud:"Tidak cepat atau mengambil masa yang panjang.",
+     ayat:"Dia lambat menyiapkan tugasan.", kategori:"Cara"},
+    {kata:"rapat", maksud:"Tidak renggang atau mempunyai jarak yang kecil.",
+     ayat:"Mereka berdiri rapat.", kategori:"Keadaan"},
+    {kata:"jarang", maksud:"Tidak rapat atau tidak kerap.",
+     ayat:"Pokok di kawasan itu tumbuh jarang.", kategori:"Keadaan"},
+    {kata:"tajam", maksud:"Mempunyai hujung atau mata yang mudah memotong.",
+     ayat:"Pisau itu tajam.", kategori:"Pancaindera"},
+    {kata:"tumpul", maksud:"Tidak tajam.",
+     ayat:"Mata pensel itu tumpul.", kategori:"Pancaindera"},
+    {kata:"bulat", maksud:"Berbentuk seperti bola atau cakera.",
+     ayat:"Bulan kelihatan bulat malam ini.", kategori:"Bentuk"},
+    {kata:"lonjong", maksud:"Berbentuk panjang dan bulat pada hujungnya.",
+     ayat:"Buah betik itu lonjong.", kategori:"Bentuk"},
+    {kata:"bujur", maksud:"Berbentuk bulat memanjang.",
+     ayat:"Meja itu berbentuk bujur.", kategori:"Bentuk"},
+    {kata:"bengkok", maksud:"Tidak lurus.",
+     ayat:"Dahan pokok itu bengkok.", kategori:"Bentuk"},
+    {kata:"lurus", maksud:"Tidak bengkok atau melengkung.",
+     ayat:"Jalan itu lurus.", kategori:"Bentuk"},
+    {kata:"comel", maksud:"Menarik dan menyenangkan hati kerana rupa yang kecil atau manis.",
+     ayat:"Anak arnab itu comel.", kategori:"Pancaindera"},
+    {kata:"indah", maksud:"Cantik dan menyenangkan dipandang.",
+     ayat:"Pemandangan di tepi laut itu indah.", kategori:"Pancaindera"},
+    {kata:"elok", maksud:"Baik, cantik atau sesuai.",
+     ayat:"Tulisan kamu elok dan kemas.", kategori:"Keadaan"},
+    {kata:"buruk", maksud:"Tidak baik atau tidak elok.",
+     ayat:"Cuaca buruk menyebabkan penerbangan ditangguhkan.", kategori:"Keadaan"},
+    {kata:"selesa", maksud:"Memberikan rasa senang dan tidak menyakitkan.",
+     ayat:"Kerusi itu selesa untuk diduduki.", kategori:"Keadaan"},
+    {kata:"sempurna", maksud:"Lengkap dan tidak mempunyai kekurangan yang ketara.",
+     ayat:"Persediaan mereka hampir sempurna.", kategori:"Keadaan"},
+    {kata:"rapuh", maksud:"Mudah pecah atau patah.",
+     ayat:"Ranting kering itu rapuh.", kategori:"Keadaan"},
+    {kata:"kukuh", maksud:"Kuat dan teguh.",
+     ayat:"Jambatan itu kukuh.", kategori:"Keadaan"},
+    {kata:"lembap", maksud:"Sedikit basah atau mengandungi banyak wap air.",
+     ayat:"Tanah itu lembap selepas hujan.", kategori:"Keadaan"},
+    {kata:"kering", maksud:"Tidak basah.",
+     ayat:"Pakaian itu sudah kering.", kategori:"Keadaan"},
+    {kata:"basah", maksud:"Mengandungi air atau cecair.",
+     ayat:"Baju saya basah terkena hujan.", kategori:"Keadaan"}
+];
+
+// ================================================
+// 2. NAVIGASI HALAMAN
+// ================================================
+
+function showPage(pageId) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.id === pageId);
+    });
+
+    document.querySelectorAll("nav button").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageId);
+    });
+
+    if (pageId === "kamus") renderDictionary();
+}
+
+document.querySelectorAll("nav button").forEach(button => {
+    button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+// ================================================
+// 3. PAPARAN HASIL CARIAN
+// ================================================
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function findWord(value) {
+    const term = value.trim().toLocaleLowerCase("ms");
+    return kamus.find(item =>
+        item.kata.toLocaleLowerCase("ms") === term
+    );
+}
+
+function makeResult(item) {
+    return `
+        <div class="result">
+            <span class="tag">${escapeHTML(item.kategori)}</span>
+            <h3>${escapeHTML(item.kata)}</h3>
+            <p><strong>Maksud:</strong> ${escapeHTML(item.maksud)}</p>
+            <p><strong>Contoh ayat:</strong> ${escapeHTML(item.ayat)}</p>
+        </div>`;
+}
+
+function searchWord(inputId) {
+    const input = document.getElementById(inputId);
+    const output = document.getElementById("homeResult");
+    const term = input.value.trim();
+
+    if (!term) {
+        output.innerHTML = "<p class='muted'>Taip perkataan dahulu.</p>";
+        return;
+    }
+
+    const item = findWord(term);
+
+    output.innerHTML = item
+        ? makeResult(item)
+        : `<div class="result">
+             <h3>Perkataan tidak ditemukan</h3>
+             <p>Perkataan “${escapeHTML(term)}” belum ada dalam kamus.
+             Cuba perkataan lain atau tambahkannya dalam bahagian data kamus.</p>
+           </div>`;
+}
+
+document.getElementById("homeSearch").addEventListener("keydown", event => {
+    if (event.key === "Enter") searchWord("homeSearch");
+});
+
+// ================================================
+// 4. SENARAI KAMUS DAN PENAPISAN CARIAN
+// ================================================
+
+function renderDictionary() {
+    const term = document.getElementById("dictionarySearch")
+        .value.trim().toLocaleLowerCase("ms");
+    const order = document.getElementById("sortOrder").value;
+
+    let results = kamus.filter(item =>
+        item.kata.toLocaleLowerCase("ms").includes(term) ||
+        item.maksud.toLocaleLowerCase("ms").includes(term) ||
+        item.kategori.toLocaleLowerCase("ms").includes(term)
+    );
+
+    results.sort((a, b) =>
+        a.kata.localeCompare(b.kata, "ms") * (order === "az" ? 1 : -1)
+    );
+
+    document.getElementById("wordCount").textContent =
+        `${results.length} perkataan ditemukan daripada ${kamus.length} entri.`;
+
+    const container = document.getElementById("dictionaryResults");
+
+    if (!results.length) {
+        container.innerHTML = "<p>Tiada perkataan ditemukan.</p>";
+        return;
+    }
+
+    container.innerHTML = results.map((item, index) => `
+        <article class="word-card">
+            <span class="tag">${escapeHTML(item.kategori)}</span>
+            <h3>${escapeHTML(item.kata)}</h3>
+            <p>${escapeHTML(item.maksud)}</p>
+            <button class="btn" data-word-index="${index}">
+                Lihat contoh ayat
+            </button>
+            <div id="cardResult${index}"></div>
+        </article>
+    `).join("");
+
+    // Gunakan data daripada results semasa, bukan input pengguna sebagai HTML.
+    container.querySelectorAll("[data-word-index]").forEach(button => {
+        button.addEventListener("click", () => {
+            const item = results[Number(button.dataset.wordIndex)];
+            const output = document.getElementById(
+                "cardResult" + button.dataset.wordIndex
+            );
+
+            output.innerHTML = `<p><strong>Contoh ayat:</strong> ${
+                escapeHTML(item.ayat)
+            }</p>`;
+        });
+    });
+}
+
+// ================================================
+// 5. FAKTA KATA ADJEKTIF
+// ================================================
+
+const facts = [
+    "Kata adjektif menerangkan sifat atau keadaan sesuatu kata nama.",
+    "Contoh kata adjektif warna ialah merah, biru, hijau dan kuning.",
+    "Contoh kata adjektif ukuran ialah panjang, pendek, besar dan kecil.",
+    "Kata adjektif perasaan termasuk gembira, sedih, takut dan rindu.",
+    "Contoh kata adjektif pancaindera ialah manis, wangi, licin dan nyaring."
+];
+
+function newFact() {
+    const fact = facts[Math.floor(Math.random() * facts.length)];
+    document.getElementById("dailyFact").textContent = fact;
+}
+
+// ================================================
+// 6. KUIZ INTERAKTIF
+// ================================================
+
+let quizQuestions = [];
+let quizIndex = 0;
+let score = 0;
+let answered = false;
+
+function startQuiz() {
+    quizQuestions = kamus
+        .filter(item => item.kategori !== "Warna")
+        .slice()
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 10);
+
+    quizIndex = 0;
+    score = 0;
+    showQuizQuestion();
+}
+
+function showQuizQuestion() {
+    answered = false;
+
+    const question = quizQuestions[quizIndex];
+
+    document.getElementById("quizProgress").textContent =
+        `Soalan ${quizIndex + 1} daripada ${quizQuestions.length}`;
+
+    document.getElementById("quizQuestion").textContent =
+        `Perkataan manakah paling sesuai dengan maksud ini: “${question.maksud}”`;
+
+    document.getElementById("quizFeedback").textContent = "";
+    document.getElementById("quizScore").textContent = `Markah: ${score}`;
+    document.getElementById("nextQuestion").hidden = true;
+
+    const wrongAnswers = kamus
+        .filter(item => item.kata !== question.kata)
+        .slice()
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map(item => item.kata);
+
+    const options = [...wrongAnswers, question.kata]
+        .sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById("quizOptions");
+    container.replaceChildren();
+
+    options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.addEventListener("click", () => checkAnswer(option, question.kata));
+        container.appendChild(button);
+    });
+}
+
+function checkAnswer(selected, correct) {
+    if (answered) return;
+    answered = true;
+
+    document.querySelectorAll("#quizOptions button").forEach(button => {
+        button.disabled = true;
+        if (button.textContent === correct) {
+            button.style.borderColor = "#24a36a";
+        }
+        if (button.textContent === selected && selected !== correct) {
+            button.style.borderColor = "#e05270";
+        }
+    });
+
+    if (selected === correct) {
+        score++;
+        document.getElementById("quizFeedback").textContent =
+            "Betul! Bagus, teruskan usaha. 🎉";
+    } else {
+        document.getElementById("quizFeedback").textContent =
+            `Belum tepat. Jawapan yang betul ialah “${correct}”.`;
+    }
+
+    document.getElementById("quizScore").textContent = `Markah: ${score}`;
+
+    const next = document.getElementById("nextQuestion");
+    next.hidden = false;
+    next.textContent = quizIndex === quizQuestions.length - 1
+        ? "Lihat keputusan"
+        : "Soalan seterusnya →";
+}
+
+function nextQuizQuestion() {
+    if (quizIndex < quizQuestions.length - 1) {
+        quizIndex++;
+        showQuizQuestion();
+    } else {
+        document.getElementById("quizProgress").textContent = "Kuiz tamat!";
+        document.getElementById("quizQuestion").textContent =
+            `Markah akhir: ${score} / ${quizQuestions.length}`;
+        document.getElementById("quizOptions").replaceChildren();
+        document.getElementById("quizFeedback").textContent =
+            score >= 8
+                ? "Cemerlang! Kamu menguasai banyak kata adjektif. 🌟"
+                : "Teruskan berlatih. Cuba ulang kuiz untuk meningkatkan markah!";
+        document.getElementById("nextQuestion").hidden = true;
+    }
+}
+
+// ================================================
+// 7. MULAKAN PERISIAN
+// ================================================
+
+newFact();
+renderDictionary();
+</script>
+
+</body>
+</html>
