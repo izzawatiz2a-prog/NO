@@ -1,1 +1,1 @@
-# ADJEKTIFVERSE
+# tak jadi
